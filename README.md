@@ -88,8 +88,8 @@ Screenshots:
 This application is a demo and uses sample data. It is not intended for production use with real customer data.
 
 ## 👥 Team
-- **Eshaan Agarwal** - [[GitHub](https://github.com/Eshan-Agarwal16)](#) 
-- **Pranav Surendran** - [GitHub](https://github.com/Pranav418) | [LinkedIn](#)
-- **Sharon A Sujitha** - [GitHub](https://github.com/sharonsujitha7) | [LinkedIn](#)
-- **Shriroop Roychoudhury** - [GitHub](https://github.com/rshriroop01) | [LinkedIn](#)
-- **Tejas C** - [GitHub](#) | [LinkedIn](#)
+- **Eshaan Agarwal** - [[GitHub](https://github.com/Eshan-Agarwal16)]
+- **Pranav Surendran** - [GitHub](https://github.com/Pranav418) 
+- **Sharon A Sujitha** - [GitHub](https://github.com/sharonsujitha7) 
+- **Shriroop Roychoudhury** - [GitHub](https://github.com/rshriroop01) 
+- **Tejas C** - [GitHub](#) 
