@@ -1,3 +1,9 @@
-## Delete this file
+# Financial Products Recommender
 
-Instead place your source files here
+### Steps to run:
+
+Create a .env file containing GEMINI_API_KEY = "YOUR_API_KEY"
+
+Create a venv called product_recommender (optional) to maintain dependencies
+
+run python app.py to launch

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceInsight Bank</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#0F4C81',
+                            light: '#3A6EA5',
+                            dark: '#0A3258',
+                        },
+                        secondary: {
+                            DEFAULT: '#E6F0FF',
+                            dark: '#C5D9F1',
+                        },
+                        accent: {
+                            DEFAULT: '#FFB347',
+                            dark: '#F79824',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-active {
+            border-bottom: 3px solid #FFB347;
+            color: #0F4C81;
+            font-weight: 600;
+        }
+        .loading {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #0F4C81;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-primary text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+                <h1 class="text-2xl font-bold">FinanceInsight Bank</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm bg-accent text-primary-dark px-2 py-1 rounded">AI-Powered Insights</span>
+                <button id="refreshBtn" class="bg-accent hover:bg-accent-dark text-primary-dark font-bold py-2 px-4 rounded flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <polyline points="23 20 23 14 17 14"></polyline>
+                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                    </svg>
+                    New Customer
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 mt-4">
+        <div id="loadingContainer" class="flex justify-center items-center h-64">
+            <div class="loading"></div>
+            <p class="ml-4 text-primary">Generating AI insights...</p>
+        </div>
+
+        <div id="contentContainer" class="hidden">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary" id="customerName">Customer Name</h2>
+                    <div class="bg-secondary px-4 py-2 rounded-full">
+                        <span class="font-semibold text-primary">ID: </span>
+                        <span id="customerId">12345</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-secondary p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold text-primary mb-2">Personal Info</h3>
+                        <p><span class="font-medium">Age:</span> <span id="customerAge">35</span></p>
+                        <p><span class="font-medium">Gender:</span> <span id="customerGender">Male</span></p>
+                        <p><span class="font-medium">Marital Status:</span> <span id="customerMaritalStatus">Married</span></p>
+                        <p><span class="font-medium">Education:</span> <span id="customerEducation">Bachelor's</span></p>
+                        <p><span class="font-medium">Occupation:</span> <span id="customerOccupation">Software Engineer</span></p>
+                    </div>
+                    <div class="bg-secondary p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold text-primary mb-2">Financial Summary</h3>
+                        <p><span class="font-medium">Income:</span> $<span id="customerIncome">95,000</span></p>
+                        <p><span class="font-medium">Credit Limit:</span> $<span id="customerCreditLimit">15,000</span></p>
+                        <p><span class="font-medium">Credit Utilization:</span> <span id="customerCreditUtilization">25</span>%</p>
+                        <p><span class="font-medium">Loan Amount:</span> $<span id="customerLoanAmount">150,000</span></p>
+                        <p><span class="font-medium">EMI Paid:</span> $<span id="customerEmiPaid">2,000</span></p>
+                    </div>
+                    <div class="bg-secondary p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold text-primary mb-2">Account Status</h3>
+                        <p><span class="font-medium">Account Balance:</span> $<span id="customerAccountBalance">45,000</span></p>
+                        <p><span class="font-medium">Max DPD:</span> <span id="customerMaxDpd">0</span></p>
+                        <p><span class="font-medium">Default Status:</span> <span id="customerDefaultStatus">No</span></p>
+                        <p><span class="font-medium">Current Products:</span> <span id="customerCurrentProducts">Credit Card, Home Loan</span></p>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-2">Customer Engagement Metrics</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-secondary p-4 rounded-lg">
+                            <h4 class="font-medium text-primary">Interest Score</h4>
+                            <div class="flex items-center mt-2">
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div id="interestScoreBar" class="bg-blue-600 h-4 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <span id="interestScore" class="ml-2">75</span>/100
+                            </div>
+                        </div>
+                        <div class="bg-secondary p-4 rounded-lg">
+                            <h4 class="font-medium text-primary">Engagement Score</h4>
+                            <div class="flex items-center mt-2">
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div id="engagementScoreBar" class="bg-green-600 h-4 rounded-full" style="width: 82%"></div>
+                                </div>
+                                <span id="engagementScore" class="ml-2">82</span>/100
+                            </div>
+                        </div>
+                        <div class="bg-secondary p-4 rounded-lg">
+                            <h4 class="font-medium text-primary">Sentiment Score</h4>
+                            <div class="flex items-center mt-2">
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div id="sentimentScoreBar" class="bg-yellow-500 h-4 rounded-full" style="width: 68%"></div>
+                                </div>
+                                <span id="sentimentScore" class="ml-2">68</span>/100
+                            </div>
+                        </div>
+                        <div class="bg-secondary p-4 rounded-lg">
+                            <h4 class="font-medium text-primary">Social Media Activity</h4>
+                            <div class="flex items-center justify-center h-full">
+                                <span id="socialMediaActivity" class="text-lg font-semibold">High</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-2">Recent Transactions</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="py-2 px-4 text-left">Date</th>
+                                    <th class="py-2 px-4 text-left">Amount</th>
+                                    <th class="py-2 px-4 text-left">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionTable">
+                                <!-- Transactions will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabs flex border-b border-gray-300 mb-6">
+                <button class="tab py-2 px-4 tab-active" data-tab="customerView">Customer View</button>
+                <button class="tab py-2 px-4" data-tab="adminView">Admin View</button>
+            </div>
+
+            <div id="customerView" class="tab-content">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold text-primary mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        AI-Recommended Products
+                    </h2>
+                    <div id="recommendationsContainer" class="space-y-4">
+                        <!-- Recommendations will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="adminView" class="tab-content hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-bold text-primary mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            AI-Generated Customer Persona
+                        </h2>
+                        <div class="bg-secondary p-4 rounded-lg">
+                            <p id="customerPersona" class="text-gray-700"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-bold text-primary mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                            AI-Generated Admin Notes & Recommendations
+                        </h2>
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                            <p class="text-red-700 font-medium">ADMIN VIEW ONLY - Not visible to customer</p>
+                        </div>
+                        <div id="adminDataContainer" class="space-y-4">
+                            <!-- Admin data will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-primary-dark text-white p-4 mt-8">
+        <div class="container mx-auto text-center">
+            <p>© 2023 FinanceInsight Bank. All rights reserved.</p>
+            <p class="text-sm mt-2">This is a demo application. No real customer data is used.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('tab-active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
+                    
+                    // Hide all tab content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Show the selected tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.remove('hidden');
+                });
+            });
+            
+            // Load random customer data
+            function loadRandomCustomer() {
+                document.getElementById('loadingContainer').classList.remove('hidden');
+                document.getElementById('contentContainer').classList.add('hidden');
+                
+                fetch('/get_random_customer')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update customer info
+                        document.getElementById('customerName').textContent = data.customer.name;
+                        document.getElementById('customerId').textContent = data.customer.customer_id;
+                        document.getElementById('customerAge').textContent = data.customer.age;
+                        document.getElementById('customerGender').textContent = data.customer.gender;
+                        document.getElementById('customerMaritalStatus').textContent = data.customer.marital_status;
+                        document.getElementById('customerEducation').textContent = data.customer.education;
+                        document.getElementById('customerOccupation').textContent = data.customer.occupation;
+                        document.getElementById('customerIncome').textContent = data.customer.salary.toLocaleString();
+                        document.getElementById('customerCreditLimit').textContent = data.customer.credit_limit.toLocaleString();
+                        document.getElementById('customerCreditUtilization').textContent = data.customer.credit_utilization;
+                        document.getElementById('customerLoanAmount').textContent = data.customer.loan_amount.toLocaleString();
+                        document.getElementById('customerEmiPaid').textContent = data.customer.emi_paid.toLocaleString();
+                        document.getElementById('customerAccountBalance').textContent = data.customer.account_balance.toLocaleString();
+                        document.getElementById('customerMaxDpd').textContent = data.customer.max_dpd;
+                        document.getElementById('customerDefaultStatus').textContent = data.customer.default_status === 0 ? 'No' : 'Yes';
+                        
+                        // Update engagement metrics
+                        const interestScore = data.customer['Interest Score'] || 0;
+                        const engagementScore = data.customer['Engagement Score'] || 0;
+                        const sentimentScore = data.customer['Sentiment Score'] || 0;
+                        const socialMediaActivity = data.customer['Social Media Activity'] || 'Unknown';
+                        
+                        document.getElementById('interestScore').textContent = interestScore;
+                        document.getElementById('interestScoreBar').style.width = `${interestScore}%`;
+                        
+                        document.getElementById('engagementScore').textContent = engagementScore;
+                        document.getElementById('engagementScoreBar').style.width = `${engagementScore}%`;
+                        
+                        document.getElementById('sentimentScore').textContent = sentimentScore;
+                        document.getElementById('sentimentScoreBar').style.width = `${sentimentScore}%`;
+                        
+                        document.getElementById('socialMediaActivity').textContent = socialMediaActivity;
+                        
+                        // Set current products
+                        const currentProducts = [];
+                        if (data.customer['Credit Card'] === 1) currentProducts.push('Credit Card');
+                        if (data.customer['Home Loan'] === 1) currentProducts.push('Home Loan');
+                        if (data.customer['Personal Loan'] === 1) currentProducts.push('Personal Loan');
+                        document.getElementById('customerCurrentProducts').textContent = 
+                            currentProducts.length > 0 ? currentProducts.join(', ') : 'None';
+                        
+                        // Update transactions
+                        const transactionTable = document.getElementById('transactionTable');
+                        transactionTable.innerHTML = '';
+                        
+                        data.customer.transaction_history.forEach(transaction => {
+                            const row = document.createElement('tr');
+                            row.className = 'border-b hover:bg-gray-50';
+                            
+                            const dateCell = document.createElement('td');
+                            dateCell.className = 'py-2 px-4';
+                            dateCell.textContent = transaction.date;
+                            
+                            const amountCell = document.createElement('td');
+                            amountCell.className = 'py-2 px-4';
+                            amountCell.textContent = `$${Math.abs(transaction.amount).toFixed(2)}`;
+                            amountCell.className += transaction.amount < 0 ? ' text-red-600' : ' text-green-600';
+                            
+                            const categoryCell = document.createElement('td');
+                            categoryCell.className = 'py-2 px-4';
+                            categoryCell.textContent = transaction.category;
+                            
+                            row.appendChild(dateCell);
+                            row.appendChild(amountCell);
+                            row.appendChild(categoryCell);
+                            
+                            transactionTable.appendChild(row);
+                        });
+                        
+                        // Update persona (now in admin view)
+                        document.getElementById('customerPersona').textContent = data.persona;
+                        
+                        // Update recommendations for customer view
+                        const recommendationsContainer = document.getElementById('recommendationsContainer');
+                        recommendationsContainer.innerHTML = '';
+                        
+                        data.recommendations.forEach(recommendation => {
+                            const div = document.createElement('div');
+                            div.className = 'bg-secondary p-4 rounded-lg hover:bg-secondary-dark transition-colors';
+                            
+                            const title = document.createElement('h3');
+                            title.className = 'font-semibold text-primary';
+                            title.textContent = recommendation.name;
+                            
+                            const desc = document.createElement('p');
+                            desc.className = 'text-gray-700 mt-1';
+                            desc.textContent = recommendation.description;
+                            
+                            div.appendChild(title);
+                            div.appendChild(desc);
+                            
+                            recommendationsContainer.appendChild(div);
+                        });
+                        
+                        // Update admin data with product names and justifications
+                        const adminDataContainer = document.getElementById('adminDataContainer');
+                        adminDataContainer.innerHTML = '';
+                        
+                        // Match admin insights with product recommendations
+                        for (let i = 0; i < Math.min(data.recommendations.length, data.admin_data.length); i++) {
+                            const div = document.createElement('div');
+                            div.className = 'p-4 bg-gray-100 rounded';
+                            
+                            const productName = document.createElement('h3');
+                            productName.className = 'font-semibold text-primary mb-2';
+                            productName.textContent = data.recommendations[i].name;
+                            
+                            const justification = document.createElement('p');
+                            justification.className = 'text-gray-700';
+                            justification.textContent = data.admin_data[i];
+                            
+                            div.appendChild(productName);
+                            div.appendChild(justification);
+                            
+                            adminDataContainer.appendChild(div);
+                        }
+                        
+                        // Show content
+                        document.getElementById('loadingContainer').classList.add('hidden');
+                        document.getElementById('contentContainer').classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        console.error('Error fetching customer data:', error);
+                        alert('Error loading customer data. Please try again.');
+                        document.getElementById('loadingContainer').classList.add('hidden');
+                    });
+            }
+            
+            // Load initial customer
+            loadRandomCustomer();
+            
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', loadRandomCustomer);
+        });
+    </script>
+</body>
+</html>
+
