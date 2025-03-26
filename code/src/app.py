@@ -5,6 +5,7 @@ import os
 import pandas as pd
 import requests
 from io import StringIO
+from dotenv import load_dotenv
 from sklearn.preprocessing import StandardScaler
 import google.generativeai as genai
 
@@ -12,7 +13,7 @@ app = Flask(__name__)
 
 # Configure Gemini AI
 # In a production environment, you would store this in environment variables
-GEMINI_API_KEY = "AIzaSyBL_TVeqisn773sbtPHFF90qzEQwlwH4-A"  # Replace with your actual API key
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")  # Pull the API key from the .env file to hide it from source code
 genai.configure(api_key=GEMINI_API_KEY)
 
 # URLs for CSV files
@@ -231,7 +232,8 @@ def generate_customer_description(customer_data):
       risk tolerance, and potential financial needs. Focus on their current financial situation,
       their engagement with banking services, and what products might benefit them based on their
       interest and sentiment scores. Consider Social Media Activity and Last Social Media Activity 
-      fields as key fields, and provide a recommendation based on it.
+      fields as key fields, and provide a recommendation based on it. If the Gender does not match the name,
+      please make the correction.
       """
       
       # Call Gemini AI to generate the description
@@ -384,5 +386,6 @@ def get_random_customer():
   return jsonify(response)
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)
+#   app.run(host='0.0.0.0', port=5000, debug=True)
 
